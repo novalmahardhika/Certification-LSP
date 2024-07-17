@@ -1,4 +1,6 @@
 export function bubbleSort(arr) {
+  const start = performance.now()
+
   for (let i = 0; i < arr.length; i++) {
     // Last i elements are already in place
     for (let j = 0; j < arr.length - i - 1; j++) {
@@ -13,6 +15,14 @@ export function bubbleSort(arr) {
       }
     }
   }
+
+  const end = performance.now()
+  const time = start - end
+
+  const { heapUsed } = process.memoryUsage()
+
+  console.log(`Time Execution ${time.toFixed(2)} MS`)
+  console.log(`Memory Usage ${(heapUsed / (1024 * 1024)).toFixed(2)} MB`)
 
   return arr
 }

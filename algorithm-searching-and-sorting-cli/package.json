@@ -1,9 +1,13 @@
 {
+  "name": "algorithm-cli-nm",
   "type": "module",
   "scripts": {
     "start": "node ./index.js"
   },
   "dependencies": {
     "enquirer": "^2.4.1"
-  }
+  },
+  "bin": "index.js",
+  "main": "index.js",
+  "version": "1.0.5"
 }

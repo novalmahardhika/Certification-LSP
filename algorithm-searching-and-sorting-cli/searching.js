@@ -19,7 +19,17 @@ export async function searching(arr) {
     return
   }
 
+  const start = performance.now()
+
   const result = binarySearch(arr, input_search.value)
+
+  const end = performance.now()
+  const time = start - end
+
+  const { heapUsed } = process.memoryUsage()
+
+  console.log(`Time Execution ${time.toFixed(2)} MS`)
+  console.log(`Memory Usage ${(heapUsed / (1024 * 1024)).toFixed(2)} MB`)
 
   if (result === -1) {
     return 'Number is not found'

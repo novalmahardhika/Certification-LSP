@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import command from 'enquirer'
 import { inputNumber } from './input-number.js'
 import { sorting } from './sorting.js'
