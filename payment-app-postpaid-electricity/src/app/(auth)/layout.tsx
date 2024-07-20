@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react'
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <div className='flex justify-center items-center h-screen px-3'>
+    <div className='flex justify-center items-center h-screen px-3 '>
       <Card className='max-w-3xl w-full  grid sm:grid-cols-2 h-[400px] rounded-md'>
         <div className='relative overflow-hidden rounded-l-md  hidden sm:block'>
           <Image
