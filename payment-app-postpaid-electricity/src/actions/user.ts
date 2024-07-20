@@ -1,12 +1,9 @@
 'use server'
 
-import { prisma } from '../../prisma/client/db'
+import { signIn } from '@/auth'
 
-export const createUser = async () => {
-  await prisma.user.create({
-    data: {
-      name: 'Bob',
-      email: 'bob@mail.com',
-    },
+export const login = async (provider: string) => {
+  await signIn(provider, {
+    redirectTo: '/',
   })
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -6,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { signIn } from 'next-auth/react'
 import React from 'react'
 
 export default function LoginPage() {
@@ -15,13 +18,17 @@ export default function LoginPage() {
         <CardTitle className='text-3xl'>Login.</CardTitle>
 
         <CardDescription>
-          Welcome, Lets join us to have a new experience in the new world.
+          Welcome, Lets join with us to have a new experience.
         </CardDescription>
       </CardHeader>
 
       <CardContent className='flex space-x-2 '>
-        <Button variant={'outline'}>Google</Button>
-        <Button variant={'outline'}>Github</Button>
+        <Button variant={'outline'} onClick={() => signIn('google')}>
+          Google
+        </Button>
+        <Button variant={'outline'} onClick={() => signIn('github')}>
+          Github
+        </Button>
       </CardContent>
     </Card>
   )
