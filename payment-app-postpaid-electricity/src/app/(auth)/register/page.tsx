@@ -1,13 +1,14 @@
 import CardWrapperForm from '@/components/auth/card-wrapper'
-import { LoginForm } from '@/components/auth/login-form'
+import { RegisterForm } from '@/components/auth/register-form'
+import React from 'react'
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <CardWrapperForm
-      title='Login'
+      title='Register'
       description=' Welcome, Lets join with us to have a new experience.'
     >
-      <LoginForm />
+      <RegisterForm />
     </CardWrapperForm>
   )
 }

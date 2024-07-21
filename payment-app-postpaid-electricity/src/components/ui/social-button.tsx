@@ -2,23 +2,32 @@ import React, { ReactNode } from 'react'
 import { Button } from './button'
 import { signIn } from 'next-auth/react'
 
-type SocialButtonType = {
-  children: ReactNode
-  provider: string
-}
+//
 
-export default function SocialButton({ children, provider }: SocialButtonType) {
+const items = [
+  {
+    name: 'Google',
+    provider: 'google',
+  },
+  {
+    name: 'Github',
+    provider: 'github',
+  },
+]
+
+export default function SocialButton() {
   return (
-    <Button
-      variant='ghost'
-      onClick={() =>
-        signIn(provider, {
-          callbackUrl: '/',
-        })
-      }
-      className=' sm:text-black text-white bg-white/5 sm:bg-transparent border-0 sm:border backdrop-blur-sm'
-    >
-      {children}
-    </Button>
+    <>
+      {items.map((item) => (
+        <Button
+          type='button'
+          variant='outline'
+          key={item.name}
+          onClick={() => signIn(item.provider, { callbackUrl: '/' })}
+        >
+          {item.name}
+        </Button>
+      ))}
+    </>
   )
 }
