@@ -48,7 +48,7 @@ export function RegisterForm() {
 
         return
       } catch (error) {
-        toast.error('InternaL Server Error')
+        toast.error('Something went wrong')
       }
     })
   }

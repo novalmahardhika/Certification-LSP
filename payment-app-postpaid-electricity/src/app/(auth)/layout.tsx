@@ -1,6 +1,5 @@
 import { auth } from '@/auth'
 import { Card } from '@/components/ui/card'
-import { revalidatePath } from 'next/cache'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import React, { ReactNode } from 'react'
@@ -17,7 +16,7 @@ export default async function AuthLayout({
   }
 
   return (
-    <div className='flex justify-center items-center h-screen px-3 '>
+    <div className='flex relative justify-center items-center h-screen px-3 '>
       <Card className='max-w-3xl w-full  grid sm:grid-cols-2  rounded-md'>
         <div className='relative overflow-hidden rounded-l-md  hidden sm:block'>
           <Image

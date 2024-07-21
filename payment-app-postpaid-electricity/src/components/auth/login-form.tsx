@@ -17,12 +17,17 @@ import { Input } from '@/components/ui/input'
 import { loginUser } from '@/actions/user'
 import { FormLoginSchema } from '@/lib/types'
 import { toast } from 'sonner'
-import { useTransition } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState, useTransition } from 'react'
 import SocialButton from '../ui/social-button'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 export function LoginForm() {
   const [isPending, startTransition] = useTransition()
+  const [isError, setIsError] = useState(false)
+  const router = useRouter()
+  const search = useSearchParams()
+  const errorQuery = search.get('error')
 
   const form = useForm<z.infer<typeof FormLoginSchema>>({
     resolver: zodResolver(FormLoginSchema),
@@ -48,9 +53,21 @@ export function LoginForm() {
 
         return
       } catch (error) {
-        toast.error('InternaL Server Error')
+        toast.error('Something went wrong')
       }
     })
+  }
+
+  useEffect(() => {
+    if (errorQuery === 'OAuthAccountNotLinked') {
+      setIsError(true)
+    }
+  }, [errorQuery, search])
+
+  if (isError) {
+    toast.error('account is already exist with another provider')
+    router.replace('/login')
+    setIsError(false)
   }
 
   return (

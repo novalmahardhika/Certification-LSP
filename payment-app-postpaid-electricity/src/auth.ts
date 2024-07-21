@@ -48,7 +48,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   session: { strategy: 'jwt' },
-
+  pages: {
+    signIn: '/login',
+    error: '/login',
+  },
   callbacks: {
     async signIn({ account, user }) {
       if (!user || !user.id) return false

@@ -2,8 +2,6 @@ import React, { ReactNode } from 'react'
 import { Button } from './button'
 import { signIn } from 'next-auth/react'
 
-//
-
 const items = [
   {
     name: 'Google',
