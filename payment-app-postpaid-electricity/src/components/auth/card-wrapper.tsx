@@ -1,27 +1,12 @@
-'use client'
-
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import SocialButton from '@/components/ui/social-button'
-import React, { ReactNode } from 'react'
-import { Separator } from '../ui/separator'
 
-const items = [
-  {
-    name: 'Google',
-    provider: 'google',
-  },
-  {
-    name: 'Github',
-    provider: 'github',
-  },
-]
+import React, { ReactNode } from 'react'
 
 type CardWrapperType = {
   children: ReactNode
@@ -47,14 +32,6 @@ export default function CardWrapperForm({
       </CardHeader>
 
       <CardContent>{children}</CardContent>
-
-      {/* <CardFooter className='flex space-y-2 flex-col  '>
-        {items.map((item, index) => (
-          <SocialButton key={`${item.name}-${index}`} provider={item.provider}>
-            {item.name}
-          </SocialButton>
-        ))}
-      </CardFooter> */}
     </Card>
   )
 }
