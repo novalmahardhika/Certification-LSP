@@ -1,7 +1,8 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { MoreHorizontal } from 'lucide-react'
+
+import ActionUserTabel from './action-user-tabel'
 
 export type UserTable = {
   id: string
@@ -27,7 +28,9 @@ export const columns: ColumnDef<UserTable>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      return <MoreHorizontal className='h-4 w-4' />
+      const user = row.original
+
+      return <ActionUserTabel {...user} />
     },
   },
 ]

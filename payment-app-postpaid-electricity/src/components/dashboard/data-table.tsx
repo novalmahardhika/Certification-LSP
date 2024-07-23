@@ -50,7 +50,7 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div>
+    <div className='w-full '>
       <div className='flex items-center py-4'>
         <Input
           placeholder={`Search ${placeholderSearch}`}
@@ -61,7 +61,7 @@ export function DataTable<TData, TValue>({
           className='max-w-sm'
         />
       </div>
-      <div className='rounded-md border'>
+      <div className='rounded-md border  '>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
