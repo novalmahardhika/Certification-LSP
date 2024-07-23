@@ -4,7 +4,7 @@ CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER');
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "name" TEXT,
+    "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "emailVerified" TIMESTAMP(3),
     "phoneNumber" TEXT,

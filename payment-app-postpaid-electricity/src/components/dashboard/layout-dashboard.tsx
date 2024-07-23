@@ -35,6 +35,11 @@ const items = [
     icon: <Home className='h-4 w-4' />,
   },
   {
+    title: 'Customers',
+    href: '/dashboard/users',
+    icon: <Users className='h-4 w-4' />,
+  },
+  {
     title: 'Admin',
     href: '#',
     icon: <ShoppingCart className='h-4 w-4' />,
@@ -43,11 +48,6 @@ const items = [
     title: 'Cost Variant',
     href: '#',
     icon: <Package className='h-4 w-4' />,
-  },
-  {
-    title: 'Customers',
-    href: '#',
-    icon: <Users className='h-4 w-4' />,
   },
   {
     title: 'Analytics',

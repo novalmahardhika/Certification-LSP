@@ -1,11 +1,11 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { useUser } from '@/hooks/use-user'
+import { useCurrentUser } from '@/hooks/use-current-user'
 import React from 'react'
 
 export default function Navbar() {
-  const user = useUser()
+  const user = useCurrentUser()
 
   return (
     <nav className='w-full h-full flex justify-end items-center'>

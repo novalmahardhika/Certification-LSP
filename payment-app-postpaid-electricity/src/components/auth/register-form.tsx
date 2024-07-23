@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { registerUser } from '@/actions/user'
+import { registerUser } from '@/actions/auth'
 import { FormRegisterSchema } from '@/lib/types'
 import { toast } from 'sonner'
 import { useTransition } from 'react'

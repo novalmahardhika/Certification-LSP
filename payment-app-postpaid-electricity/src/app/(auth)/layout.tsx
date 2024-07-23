@@ -1,7 +1,5 @@
-import { auth } from '@/auth'
 import { Card } from '@/components/ui/card'
-import { revalidatePath } from 'next/cache'
-import Image from 'next/image'
+import { currentUser } from '@/hooks/server/current-user'
 import { redirect } from 'next/navigation'
 import React, { ReactNode } from 'react'
 
@@ -10,9 +8,9 @@ export default async function AuthLayout({
 }: {
   children: ReactNode
 }) {
-  const session = await auth()
+  const user = await currentUser()
 
-  if (session) {
+  if (user) {
     redirect('/')
   }
 

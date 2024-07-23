@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { loginUser } from '@/actions/user'
+import { loginUser } from '@/actions/auth'
 import { FormLoginSchema } from '@/lib/types'
 import { toast } from 'sonner'
 import { useEffect, useState, useTransition } from 'react'
