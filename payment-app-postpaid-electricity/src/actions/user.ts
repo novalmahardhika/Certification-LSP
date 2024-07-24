@@ -1,8 +1,9 @@
 'use server'
 
-import { UserUpdateSchema } from '@/lib/types'
+import { UserCreateSchema, UserUpdateSchema } from '@/lib/types'
 import { prisma } from '../../prisma/client/db'
 import { z } from 'zod'
+import bcrypt from 'bcryptjs'
 
 export async function getUserById(id: string) {
   const user = await prisma.user.findUnique({ where: { id } })
@@ -11,7 +12,11 @@ export async function getUserById(id: string) {
 }
 
 export async function getAllUsers() {
-  const users = await prisma.user.findMany()
+  const users = await prisma.user.findMany({
+    orderBy: {
+      createdAt: 'asc',
+    },
+  })
 
   return users
 }
@@ -28,8 +33,6 @@ export async function deleteUser(id: string) {
 
     return { success: 'Deleted user successfully' }
   } catch (error) {
-    console.log(error)
-
     return { error: 'Internal server error' }
   }
 }
@@ -67,5 +70,50 @@ export async function updateUser(
     return { success: 'user updated successfully' }
   } catch (error) {
     return { error: 'Internal server error' }
+  }
+}
+
+export async function createUser(payload: z.infer<typeof UserCreateSchema>) {
+  const checkPayload = UserCreateSchema.safeParse(payload)
+
+  if (!checkPayload.success) {
+    return { error: 'Invalid Field' }
+  }
+
+  try {
+    const { email, phoneNumber, password } = checkPayload.data
+
+    const checkEmailExist = await prisma.user.findFirst({ where: { email } })
+
+    if (!!checkEmailExist) {
+      return { error: 'Email already exist ' }
+    }
+
+    if (phoneNumber) {
+      const checkPhoneNumber = await prisma.user.findUnique({
+        where: { phoneNumber },
+      })
+
+      if (checkPhoneNumber) {
+        return { error: 'Phone number already exist' }
+      }
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10)
+
+    await prisma.user.create({
+      data: {
+        ...payload,
+        password: hashPassword,
+      },
+    })
+
+    return { success: 'Created user is successfully' }
+  } catch (error) {
+    if (error instanceof Error) {
+      return { error: error.message }
+    }
+
+    return { error: 'Internal Server Error' }
   }
 }

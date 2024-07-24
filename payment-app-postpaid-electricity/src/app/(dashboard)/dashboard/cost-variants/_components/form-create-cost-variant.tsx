@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { date, z } from 'zod'
+import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -14,69 +14,50 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { loginUser } from '@/actions/auth'
-import { FormLoginSchema } from '@/lib/types'
+
+import { CostVariantSchema } from '@/lib/types'
 import { toast } from 'sonner'
-import { useEffect, useState, useTransition } from 'react'
-import SocialButton from '../ui/social-button'
-import { useSearchParams } from 'next/navigation'
+import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import { createCostVariant } from '@/actions/cost-variant'
 
-export function LoginForm() {
+export function FormCreateCostVariant() {
   const [isPending, startTransition] = useTransition()
-  const [isError, setIsError] = useState(false)
   const router = useRouter()
-  const search = useSearchParams()
-  const errorQuery = search.get('error')
 
-  const form = useForm<z.infer<typeof FormLoginSchema>>({
-    resolver: zodResolver(FormLoginSchema),
+  const form = useForm<z.infer<typeof CostVariantSchema>>({
+    resolver: zodResolver(CostVariantSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      code: '',
+      power: '',
     },
   })
 
-  const onSubmit = (values: z.infer<typeof FormLoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof CostVariantSchema>) => {
     startTransition(async () => {
-      const data = loginUser(values)
-
-      toast.promise(() => data, {
+      const data = createCostVariant(values)
+      toast.promise(async () => data, {
         success: (await data.then()).success,
         error: (await data.then()).error || 'Something went wrong',
         loading: 'wait a minute',
         finally: () => {
-          setTimeout(() => {
-            window.location.href = '/'
-          }, 1000)
+          router.refresh()
         },
       })
     })
   }
 
-  useEffect(() => {
-    if (errorQuery === 'OAuthAccountNotLinked') {
-      setIsError(true)
-    }
-  }, [errorQuery, search])
-
-  if (isError) {
-    toast.error('account is already exist with another provider')
-    router.replace('/login')
-    setIsError(false)
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='max-w-lg w-full'>
         <FormField
           control={form.control}
-          name='email'
+          name='code'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>email</FormLabel>
+              <FormLabel>code</FormLabel>
               <FormControl>
-                <Input placeholder='bob@mail.com' {...field} />
+                <Input placeholder='INV001' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -85,12 +66,26 @@ export function LoginForm() {
 
         <FormField
           control={form.control}
-          name='password'
+          name='power'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>password</FormLabel>
+              <FormLabel>power</FormLabel>
               <FormControl>
-                <Input type='password' placeholder='********' {...field} />
+                <Input placeholder='450Kwh' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='costPerKwh'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Cost Per Kwh</FormLabel>
+              <FormControl>
+                <Input placeholder='1000' type='number' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -99,9 +94,8 @@ export function LoginForm() {
 
         <div className='space-x-2'>
           <Button type='submit' className='mt-5' disabled={isPending}>
-            Submit
+            Create
           </Button>
-          <SocialButton />
         </div>
       </form>
     </Form>

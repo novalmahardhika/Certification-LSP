@@ -11,21 +11,21 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
 import { MoreHorizontal } from 'lucide-react'
-import { UserTable } from './column'
+
 import Link from 'next/link'
 import { ModalDelete } from '@/components/modals/modal-delete'
-import { deleteUser } from '@/actions/user'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { CostPerKwhTable } from './column'
+import { deleteCostVariant } from '@/actions/cost-variant'
 
-export default function ActionUserTabel(user: UserTable) {
+export default function ActionCostVariantTabel(costVariant: CostPerKwhTable) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
   const onDelete = async () => {
     startTransition(async () => {
-      const data = deleteUser(user.id)
-
+      const data = deleteCostVariant(costVariant.id)
       toast.promise(async () => data, {
         success: (await data.then()).success,
         error: (await data.then()).error || 'Something went wrong',
@@ -38,7 +38,7 @@ export default function ActionUserTabel(user: UserTable) {
   }
 
   const onCopy = () => {
-    navigator.clipboard.writeText(user.id)
+    navigator.clipboard.writeText(costVariant.id)
     toast.success('Copied user id')
   }
 
@@ -69,7 +69,9 @@ export default function ActionUserTabel(user: UserTable) {
             asChild
             className='w-full flex justify-start p-0'
           >
-            <Link href={`/dashboard/users/${user.id}`}>Edit</Link>
+            <Link href={`/dashboard/cost-variants/${costVariant.id}`}>
+              Edit
+            </Link>
           </Button>
         </DropdownMenuItem>
 

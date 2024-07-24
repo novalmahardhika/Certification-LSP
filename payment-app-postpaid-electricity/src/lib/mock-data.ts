@@ -64,3 +64,31 @@ export const mockUserAdmin = [
     address: 'jl Semangka no 2',
   },
 ]
+
+export const mockCostVariant = [
+  {
+    code: 'INV001',
+    power: '450Kwh',
+    costPerKwh: 1000,
+  },
+  {
+    code: 'INV002',
+    power: '500Kwh',
+    costPerKwh: 1200,
+  },
+  {
+    code: 'INV003',
+    power: '510Kwh',
+    costPerKwh: 1300,
+  },
+  {
+    code: 'INV004',
+    power: '550Kwh',
+    costPerKwh: 1500,
+  },
+  {
+    code: 'INV005',
+    power: '600Kwh',
+    costPerKwh: 1800,
+  },
+]

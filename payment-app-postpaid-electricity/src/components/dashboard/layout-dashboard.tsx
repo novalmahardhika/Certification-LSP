@@ -40,15 +40,16 @@ const items = [
     icon: <Users className='h-4 w-4' />,
   },
   {
+    title: 'Cost Variant',
+    href: '/dashboard/cost-variants',
+    icon: <Package className='h-4 w-4' />,
+  },
+  {
     title: 'Admin',
     href: '#',
     icon: <ShoppingCart className='h-4 w-4' />,
   },
-  {
-    title: 'Cost Variant',
-    href: '#',
-    icon: <Package className='h-4 w-4' />,
-  },
+
   {
     title: 'Analytics',
     href: '#',

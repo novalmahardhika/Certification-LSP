@@ -14,64 +14,54 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { registerUser } from '@/actions/auth'
-import { FormRegisterSchema } from '@/lib/types'
+
+import { CostVariantSchema } from '@/lib/types'
 import { toast } from 'sonner'
 import { useTransition } from 'react'
-import SocialButton from '../ui/social-button'
+import { useRouter } from 'next/navigation'
+import { CostVariant } from '@prisma/client'
+import { updateCostVariant } from '@/actions/cost-variant'
 
-export function RegisterForm() {
+export function FormUpdateCostVariant(costVariant: CostVariant) {
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
-  const form = useForm<z.infer<typeof FormRegisterSchema>>({
-    resolver: zodResolver(FormRegisterSchema),
+  const form = useForm<z.infer<typeof CostVariantSchema>>({
+    resolver: zodResolver(CostVariantSchema),
     defaultValues: {
-      name: '',
-      email: '',
-      password: '',
+      code: costVariant.code,
+      power: costVariant.power,
+      costPerKwh: costVariant.costPerKwh,
     },
   })
 
-  const onSubmit = (values: z.infer<typeof FormRegisterSchema>) => {
+  const onSubmit = (values: z.infer<typeof CostVariantSchema>) => {
     startTransition(async () => {
-      const data = registerUser(values)
+      const data = updateCostVariant(values, costVariant.id)
       toast.promise(async () => data, {
         success: (await data.then()).success,
         error: (await data.then()).error || 'Something went wrong',
         loading: 'wait a minute',
         finally: () => {
-          setTimeout(() => {
-            window.location.href = '/login'
-          }, 1000)
+          router.refresh()
         },
       })
     })
   }
 
+  const typeCost = form.register('costPerKwh', { valueAsNumber: true })
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='max-w-lg w-full'>
         <FormField
           control={form.control}
-          name='name'
+          name='code'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>name</FormLabel>
+              <FormLabel>code</FormLabel>
               <FormControl>
-                <Input placeholder='bob' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='email'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>email</FormLabel>
-              <FormControl>
-                <Input placeholder='bob@mail.com' {...field} />
+                <Input placeholder='INV001' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -80,12 +70,26 @@ export function RegisterForm() {
 
         <FormField
           control={form.control}
-          name='password'
+          name='power'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>password</FormLabel>
+              <FormLabel>power</FormLabel>
               <FormControl>
-                <Input type='password' placeholder='********' {...field} />
+                <Input placeholder='450Kwh' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='costPerKwh'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Cost Per Kwh</FormLabel>
+              <FormControl>
+                <Input placeholder='1000' type='number' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -94,9 +98,8 @@ export function RegisterForm() {
 
         <div className='space-x-2'>
           <Button type='submit' className='mt-5' disabled={isPending}>
-            Submit
+            Update Data
           </Button>
-          <SocialButton />
         </div>
       </form>
     </Form>

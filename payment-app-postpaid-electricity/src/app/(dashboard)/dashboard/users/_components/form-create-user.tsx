@@ -15,40 +15,47 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-import { UserUpdateSchema } from '@/lib/types'
+import { UserCreateSchema } from '@/lib/types'
 import { toast } from 'sonner'
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { User } from '@prisma/client'
-import { updateUser } from '@/actions/user'
+import { createUser } from '@/actions/user'
+import { Role } from '@prisma/client'
 
-export function FormUpdateUser(user: User) {
+export function FormCreateUser() {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
-  const form = useForm<z.infer<typeof UserUpdateSchema>>({
-    resolver: zodResolver(UserUpdateSchema),
+  const form = useForm<z.infer<typeof UserCreateSchema>>({
+    resolver: zodResolver(UserCreateSchema),
     defaultValues: {
-      name: user.name,
-      email: user.email,
-      phoneNumber: user.phoneNumber || '',
-      role: user.role,
-      address: user.address || '',
+      name: '',
+      email: '',
+      phoneNumber: '',
+      password: '',
+      address: '',
+      role: Role.USER,
     },
   })
 
-  const onSubmit = (values: z.infer<typeof UserUpdateSchema>) => {
+  const onSubmit = (values: z.infer<typeof UserCreateSchema>) => {
     startTransition(async () => {
-      const data = updateUser(values, user.id)
+      try {
+        const data = await createUser(values)
 
-      toast.promise(async () => data, {
-        success: (await data.then()).success,
-        error: (await data.then()).error || 'Something went wrong',
-        loading: 'wait a minute',
-        finally: () => {
+        if (data.success) {
+          toast.success(data.success)
           router.refresh()
-        },
-      })
+          return
+        }
+
+        if (data.error) {
+          toast.error(data.error)
+          return
+        }
+      } catch (error) {
+        toast.error('Something went wrong ')
+      }
     })
   }
 
@@ -77,6 +84,20 @@ export function FormUpdateUser(user: User) {
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input placeholder='bob@mail.com' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='password'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input placeholder='********' type='password' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

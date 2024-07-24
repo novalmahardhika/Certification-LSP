@@ -21,9 +21,9 @@ export function ModalDelete({ onDelete, loading }: ModalDeleteProps) {
     <AlertDialog>
       <AlertDialogTrigger
         asChild
-        className='flex justify-start   w-full px-2 py-1'
+        className='flex justify-start   w-full px-2 py-2.5'
       >
-        <Button variant='ghost' className=' h-full   w-full'>
+        <Button variant='ghost' className='h-full   w-full'>
           Delete
         </Button>
       </AlertDialogTrigger>
