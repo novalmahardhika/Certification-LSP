@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 
 import { Separator } from '@/components/ui/separator'
 import { FormUpdateCostVariant } from '../_components/form-update-cost-variant'
+import TitleDashboard from '@/components/dashboard/title-dashboard'
 
 export default async function CostVariantId({
   params,
@@ -22,8 +23,11 @@ export default async function CostVariantId({
 
   return (
     <div>
-      <h1 className='text-2xl font-bold'>Detail Cost Variant</h1>
-      <Separator className='my-2' />
+      <TitleDashboard
+        title='Update Cost Variant'
+        desc='update cost variant page to update data cost variants.'
+      />
+      <Separator className='my-3' />
       <FormUpdateCostVariant {...checkCostVariant} />
     </div>
   )

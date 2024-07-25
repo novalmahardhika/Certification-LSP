@@ -2,6 +2,21 @@
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER');
 
 -- CreateTable
+CREATE TABLE "Usage" (
+    "id" TEXT NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT false,
+    "initialKwh" INTEGER NOT NULL DEFAULT 0,
+    "finalKwh" INTEGER,
+    "startDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "endDate" TIMESTAMP(3) NOT NULL DEFAULT (NOW() + '30 days'::interval),
+    "userId" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Usage_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "CostVariant" (
     "id" TEXT NOT NULL,
     "code" TEXT NOT NULL,
@@ -18,6 +33,7 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "emailVerified" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "phoneNumber" TEXT,
     "password" TEXT,
     "image" TEXT,
@@ -66,6 +82,9 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_phoneNumber_key" ON "User"("phoneNumber");
+
+-- AddForeignKey
+ALTER TABLE "Usage" ADD CONSTRAINT "Usage_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_costVariantId_fkey" FOREIGN KEY ("costVariantId") REFERENCES "CostVariant"("id") ON DELETE SET NULL ON UPDATE CASCADE;

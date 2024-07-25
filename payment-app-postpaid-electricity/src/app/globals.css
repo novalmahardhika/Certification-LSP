@@ -67,3 +67,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.desc-title {
+  @apply text-sm text-gray-500;
+}

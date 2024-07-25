@@ -38,6 +38,11 @@ export async function registerUser(
         email,
         name,
         password: encryptedPassword,
+        usage: {
+          create: {
+            isActive: true,
+          },
+        },
       },
     })
 

@@ -19,6 +19,8 @@ export default async function CostVariantPage() {
       <TitleDashboard
         href='/dashboard/cost-variants/create'
         title='Cost Variants'
+        desc='List all of cost variant to manage them all.'
+        isMain
       />
       <DataTable
         columns={columns}

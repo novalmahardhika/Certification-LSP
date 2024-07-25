@@ -15,7 +15,7 @@ export const FormLoginSchema = z.object({
 export const UserCreateSchema = z.object({
   name: z.string().trim().min(1),
   email: z.string().email(),
-  phoneNumber: z.string().optional(),
+  phoneNumber: z.string().trim().min(1),
   password: z.string().min(8),
   role: z.enum(['ADMIN', 'USER']),
   address: z.string().trim().optional(),
@@ -27,8 +27,8 @@ export const UserUpdateSchema = z.object({
   email: z.string().email(),
   phoneNumber: z.string().optional(),
   role: z.enum(['ADMIN', 'USER']),
-  address: z.string().trim().min(1),
-  costVariantCode: z.string(),
+  address: z.string().trim().optional(),
+  costVariantCode: z.string().optional(),
 })
 
 export const CostVariantSchema = z.object({

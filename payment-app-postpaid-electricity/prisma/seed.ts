@@ -29,6 +29,11 @@ async function main() {
         update: {},
         create: {
           ...user,
+          usage: {
+            create: {
+              isActive: true,
+            },
+          },
           costVariant: {
             connect: {
               code: 'INV001',

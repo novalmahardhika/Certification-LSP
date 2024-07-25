@@ -4,13 +4,23 @@ import { UserCreateSchema, UserUpdateSchema } from '@/lib/types'
 import { prisma } from '../../prisma/client/db'
 import { z } from 'zod'
 import bcrypt from 'bcryptjs'
+import { Role } from '@prisma/client'
 
 export async function getUserById(id: string) {
   const user = await prisma.user.findUnique({
     where: { id },
     include: {
       costVariant: true,
+      usage: true,
     },
+  })
+
+  return user
+}
+
+export async function getUserByEmail(email: string) {
+  const user = await prisma.user.findUnique({
+    where: { email },
   })
 
   return user
@@ -18,8 +28,12 @@ export async function getUserById(id: string) {
 
 export async function getAllUsers() {
   const users = await prisma.user.findMany({
+    where: { role: Role.USER },
     orderBy: {
       createdAt: 'asc',
+    },
+    include: {
+      costVariant: true,
     },
   })
 

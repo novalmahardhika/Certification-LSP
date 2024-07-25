@@ -7,6 +7,7 @@ import Credentials from 'next-auth/providers/credentials'
 import { getUserById, updateVerifiedUser } from './lib/user'
 import { FormLoginSchema } from './lib/types'
 import bcrypt from 'bcryptjs'
+import { getUserByEmail } from './actions/user'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -14,10 +15,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     GitHub({
       clientId: process.env.AUTH_GITHUB_ID,
       clientSecret: process.env.AUTH_GITHUB_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
     Credentials({
       authorize: async (credential) => {
@@ -54,6 +57,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async signIn({ account, user }) {
+      if (!user.email || !user.name) return false
+
+      const checkOauth =
+        account?.provider === 'google' || account?.provider === 'github'
+
+      const checkUserByEmail = await getUserByEmail(user.email)
+
+      if (checkOauth && !checkUserByEmail) {
+        await prisma.user.create({
+          data: {
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            usage: {
+              create: {
+                isActive: true,
+              },
+            },
+          },
+        })
+      }
+
       return true
     },
     async session({ session, token }) {

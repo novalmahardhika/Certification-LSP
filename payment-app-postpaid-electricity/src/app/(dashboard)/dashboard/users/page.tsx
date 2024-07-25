@@ -13,13 +13,18 @@ export default async function DashboardUserPage() {
     id: user.id,
     name: user.name,
     email: user.email,
+    costVariant: user.costVariant?.power,
     date: formatDate(user.createdAt),
   }))
 
   return (
     <div>
-      {/* <h1 className='text-2xl font-bold'>Get List Users</h1> */}
-      <TitleDashboard title='Get List Users' href='/dashboard/users/create' />
+      <TitleDashboard
+        title='Get List Users'
+        href='/dashboard/users/create'
+        desc='List all of user to manage them all.'
+        isMain
+      />
       <DataTable
         columns={columns}
         data={modifiedData}

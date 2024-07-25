@@ -8,6 +8,7 @@ export type UserTable = {
   id: string
   name: string
   email: string
+  costVariant: string | undefined
   date: string
 }
 
@@ -23,6 +24,10 @@ export const columns: ColumnDef<UserTable>[] = [
   {
     accessorKey: 'email',
     header: 'Email',
+  },
+  {
+    accessorKey: 'costVariant',
+    header: 'Cost Variant',
   },
   {
     accessorKey: 'date',

@@ -4,6 +4,8 @@ import { getUserById } from '@/actions/user'
 import { redirect } from 'next/navigation'
 import { Separator } from '@/components/ui/separator'
 import { getListCostVariant } from '@/actions/cost-variant'
+import TitleDashboard from '@/components/dashboard/title-dashboard'
+import CreateBill from '../_components/create-bill'
 
 export default async function DetailUserPage({
   params,
@@ -18,11 +20,21 @@ export default async function DetailUserPage({
     redirect('/dashboard/users')
   }
 
+  const currentUsage = user.usage.filter((usage) => usage.isActive === true)[0]
+
   return (
     <div>
-      <h1 className='text-2xl font-bold'>Detail User</h1>
-      <Separator className='my-2' />
-      <FormUpdateUser user={user} listCostVariant={costVariant} />
+      <TitleDashboard
+        title='Detail Users'
+        desc='Show all of detail data from user.'
+      />
+      <Separator className='my-3' />
+      <div className='grid md:grid-cols-2 gap-10  md:gap-5 xl:gap-0'>
+        <FormUpdateUser user={user} listCostVariant={costVariant} />
+        <div className='flex justify-between order-first md:order-last '>
+          <CreateBill {...currentUsage} />
+        </div>
+      </div>
     </div>
   )
 }

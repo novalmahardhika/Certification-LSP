@@ -67,11 +67,11 @@ export function FormUpdateUser({ user, listCostVariant }: UserProps) {
 
   return (
     <div>
-      <h2 className='font-semibold mb-3 text-xl'>Update User</h2>
+      {/* <h2 className='font-semibold mb-3 text-xl'>Update User</h2> */}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='max-w-lg w-full'
+          className='max-w-xl w-full'
         >
           <FormField
             control={form.control}

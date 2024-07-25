@@ -73,7 +73,7 @@ export function FormCreateUser({ listCostVariant }: UserCreateProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='max-w-lg w-full'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='max-w-xl w-full'>
         <FormField
           control={form.control}
           name='name'
