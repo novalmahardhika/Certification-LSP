@@ -18,16 +18,17 @@ export const UserCreateSchema = z.object({
   phoneNumber: z.string().optional(),
   password: z.string().min(8),
   role: z.enum(['ADMIN', 'USER']),
-  address: z.string().trim().min(1).optional(),
+  address: z.string().trim().optional(),
+  costVariantCode: z.string(),
 })
 
 export const UserUpdateSchema = z.object({
   name: z.string().trim().min(1),
   email: z.string().email(),
   phoneNumber: z.string().optional(),
-  // password: z.string().min(8).optional(),
   role: z.enum(['ADMIN', 'USER']),
   address: z.string().trim().min(1),
+  costVariantCode: z.string(),
 })
 
 export const CostVariantSchema = z.object({

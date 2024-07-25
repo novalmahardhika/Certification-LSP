@@ -13,6 +13,10 @@ export type UserTable = {
 
 export const columns: ColumnDef<UserTable>[] = [
   {
+    accessorKey: 'id',
+    header: 'ID',
+  },
+  {
     accessorKey: 'name',
     header: 'Name',
   },

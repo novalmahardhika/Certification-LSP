@@ -38,7 +38,6 @@ export async function registerUser(
         email,
         name,
         password: encryptedPassword,
-        emailVerified: new Date(),
       },
     })
 

@@ -2,15 +2,15 @@
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER');
 
 -- CreateTable
-CREATE TABLE "Cost_Variant" (
+CREATE TABLE "CostVariant" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
     "power" TEXT NOT NULL,
     "costPerKwh" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Cost_Variant_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "CostVariant_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -18,12 +18,12 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "emailVerified" TIMESTAMP(3),
     "phoneNumber" TEXT,
     "password" TEXT,
     "image" TEXT,
     "role" "Role" NOT NULL DEFAULT 'USER',
     "address" TEXT,
+    "costVariantId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -59,10 +59,16 @@ CREATE TABLE "VerificationToken" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "CostVariant_code_key" ON "CostVariant"("code");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_phoneNumber_key" ON "User"("phoneNumber");
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_costVariantId_fkey" FOREIGN KEY ("costVariantId") REFERENCES "CostVariant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

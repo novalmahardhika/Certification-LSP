@@ -2,13 +2,13 @@ import { mockCostVariant, mockUserAdmin, mockUsers } from '../src/lib/mock-data'
 import { prisma } from './client/db'
 
 async function main() {
-  mockUsers.map(
-    async (user) =>
-      await prisma.user.upsert({
-        where: { email: user.email },
+  mockCostVariant.map(
+    async (data) =>
+      await prisma.costVariant.upsert({
+        where: { code: data.code },
         update: {},
         create: {
-          ...user,
+          ...data,
         },
       })
   )
@@ -22,13 +22,18 @@ async function main() {
         },
       })
   )
-  mockCostVariant.map(
-    async (data) =>
-      await prisma.costVariant.upsert({
-        where: { code: data.code },
+  mockUsers.map(
+    async (user) =>
+      await prisma.user.upsert({
+        where: { email: user.email },
         update: {},
         create: {
-          ...data,
+          ...user,
+          costVariant: {
+            connect: {
+              code: 'INV001',
+            },
+          },
         },
       })
   )

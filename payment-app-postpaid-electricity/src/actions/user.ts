@@ -6,7 +6,12 @@ import { z } from 'zod'
 import bcrypt from 'bcryptjs'
 
 export async function getUserById(id: string) {
-  const user = await prisma.user.findUnique({ where: { id } })
+  const user = await prisma.user.findUnique({
+    where: { id },
+    include: {
+      costVariant: true,
+    },
+  })
 
   return user
 }
@@ -48,7 +53,10 @@ export async function updateUser(
   }
 
   try {
-    const { name, email, address, phoneNumber, role } = checkPayload.data
+    const { name, email, address, phoneNumber, role, costVariantCode } =
+      checkPayload.data
+
+    console.log(checkPayload.data)
 
     const updateUser = await prisma.user.update({
       where: {
@@ -60,6 +68,11 @@ export async function updateUser(
         address,
         phoneNumber,
         role,
+        costVariant: {
+          connect: {
+            code: costVariantCode,
+          },
+        },
       },
     })
 
@@ -81,7 +94,15 @@ export async function createUser(payload: z.infer<typeof UserCreateSchema>) {
   }
 
   try {
-    const { email, phoneNumber, password } = checkPayload.data
+    const {
+      name,
+      role,
+      address,
+      costVariantCode,
+      email,
+      phoneNumber,
+      password,
+    } = checkPayload.data
 
     const checkEmailExist = await prisma.user.findFirst({ where: { email } })
 
@@ -101,15 +122,28 @@ export async function createUser(payload: z.infer<typeof UserCreateSchema>) {
 
     const hashPassword = await bcrypt.hash(password, 10)
 
-    await prisma.user.create({
-      data: {
-        ...payload,
-        password: hashPassword,
+    const data = {
+      name,
+      email,
+      phoneNumber,
+      role,
+      address,
+      password: hashPassword,
+      costVariant: {
+        connect: {
+          code: costVariantCode,
+        },
       },
+    }
+
+    await prisma.user.create({
+      data: data,
     })
 
     return { success: 'Created user is successfully' }
   } catch (error) {
+    console.log(error)
+
     if (error instanceof Error) {
       return { error: error.message }
     }

@@ -20,9 +20,20 @@ import { toast } from 'sonner'
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { createUser } from '@/actions/user'
-import { Role } from '@prisma/client'
+import { CostVariant, Prisma, Role } from '@prisma/client'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
-export function FormCreateUser() {
+type UserCreateProps = {
+  listCostVariant: CostVariant[]
+}
+
+export function FormCreateUser({ listCostVariant }: UserCreateProps) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
@@ -35,6 +46,7 @@ export function FormCreateUser() {
       password: '',
       address: '',
       role: Role.USER,
+      costVariantCode: '',
     },
   })
 
@@ -124,10 +136,17 @@ export function FormCreateUser() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Role</FormLabel>
-              <FormControl>
-                <Input placeholder='USER' {...field} />
-              </FormControl>
-              <FormMessage />
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Select a role user' />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value='USER'>USER</SelectItem>
+                  <SelectItem value='ADMIN'>ADMIN</SelectItem>
+                </SelectContent>
+              </Select>
             </FormItem>
           )}
         />
@@ -142,6 +161,35 @@ export function FormCreateUser() {
                 <Input placeholder='Jl Kijang no 40' {...field} />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='costVariantCode'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Cost Variant</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Select a cost variant to display' />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {listCostVariant.map((variant, index) => (
+                    <SelectItem
+                      key={`${variant.code}-${index}`}
+                      value={variant.code}
+                    >
+                      <span>{variant.power}</span>
+                      <span className='mx-3'>-</span>
+                      <span>{variant.costPerKwh}/Kwh</span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </FormItem>
           )}
         />

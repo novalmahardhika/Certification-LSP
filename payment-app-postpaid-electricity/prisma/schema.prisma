@@ -20,26 +20,29 @@ enum Role {
 
 
 model CostVariant {
-  id String @id @default(uuid())
+  id String @id @default(cuid())
   code String @unique
   power String
   costPerKwh Int
-
+  user User[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model User {
-  id  String  @id @default(uuid())
+  id  String  @id @default(cuid())
   name  String
   email  String  @unique
-  emailVerified DateTime?
   phoneNumber String? @unique
   password String?
   image  String?
   role Role @default(USER)
   address String?
   accounts  Account[]
+
+  costVariantId String? 
+  costVariant CostVariant? @relation(fields: [costVariantId], references: [id] ) 
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

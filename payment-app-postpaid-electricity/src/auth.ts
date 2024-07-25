@@ -54,12 +54,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async signIn({ account, user }) {
-      if (!user || !user.id) return false
-
-      if (account && account.provider) {
-        await updateVerifiedUser(user.id)
-      }
-
       return true
     },
     async session({ session, token }) {
