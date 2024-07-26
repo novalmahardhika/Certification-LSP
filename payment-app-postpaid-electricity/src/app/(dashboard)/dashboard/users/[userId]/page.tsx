@@ -20,6 +20,8 @@ export default async function DetailUserPage({
     redirect('/dashboard/users')
   }
 
+  console.log(user.costVariant)
+
   const currentUsage = user.usage.filter((usage) => usage.isActive === true)[0]
 
   return (
@@ -32,7 +34,10 @@ export default async function DetailUserPage({
       <div className='grid md:grid-cols-2 gap-10  md:gap-5 xl:gap-0'>
         <FormUpdateUser user={user} listCostVariant={costVariant} />
         <div className='flex justify-between order-first md:order-last '>
-          <CreateBill {...currentUsage} />
+          <CreateBill
+            currentUsage={currentUsage}
+            costVariant={user.costVariant}
+          />
         </div>
       </div>
     </div>

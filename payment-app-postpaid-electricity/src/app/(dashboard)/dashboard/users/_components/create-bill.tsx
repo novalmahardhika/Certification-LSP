@@ -1,16 +1,72 @@
+'use client'
+
 import CardWrapper from '@/components/dashboard/card-wrapper'
 import { Button } from '@/components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { formatDate } from '@/lib/format-date'
-import { Usage } from '@prisma/client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { CostVariant, Usage } from '@prisma/client'
 import React from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-export default function CreateBill(currentUsage: Usage) {
+type CreateBillProps = {
+  currentUsage: Usage
+  costVariant: CostVariant | null
+}
+
+export default function CreateBill({
+  currentUsage,
+  costVariant,
+}: CreateBillProps) {
+  const formSchema = z.object({
+    finalkWh: z.coerce
+      .number()
+      .refine((data) => data > currentUsage.initialKwh, {
+        message: 'Final kWh cannot less than initial kWh',
+      }),
+  })
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      finalkWh: 0,
+    },
+  })
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    console.log(values)
+  }
+
   return (
     <div className=' w-full'>
       <h2 className='font-semibold mb-3 text-xl'>Detail Usage</h2>
 
       <CardWrapper className='flex flex-col space-y-3'>
+        <span className='flex justify-between font-medium'>
+          <p>Code Variant</p>
+          <p>{costVariant?.code}</p>
+        </span>
+
+        <span className='flex justify-between font-medium'>
+          <p>Power</p>
+          <p>{costVariant?.power}</p>
+        </span>
+
+        <span className='flex justify-between font-medium'>
+          <p>Cost per kWh</p>
+          <p>{costVariant?.costPerKwh}/kWh</p>
+        </span>
+
         <span className='flex justify-between font-medium'>
           <p>Initial kWh</p>
           <p>{currentUsage.initialKwh}</p>
@@ -26,12 +82,36 @@ export default function CreateBill(currentUsage: Usage) {
           <p>{formatDate(currentUsage.endDate)}</p>
         </span>
 
-        <span className='flex flex-col justify-between font-medium '>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-3'>
+            <FormField
+              control={form.control}
+              name='finalkWh'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Final kWh</FormLabel>
+                  <FormControl>
+                    <Input placeholder='30' type='number' {...field} />
+                  </FormControl>
+                  <FormDescription className='text-sm'>
+                    Input final kWh for generate bill user.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type='submit' className='w-full'>
+              Create Bill
+            </Button>
+          </form>
+        </Form>
+
+        {/* <span className='flex flex-col justify-between font-medium '>
           <p>Final kWh :</p>
           <Input className='mt-3' type='text' datatype='numeric' />
         </span>
 
-        <Button className='w-full'>Create Bill</Button>
+        <Button className='w-full'>Create Bill</Button> */}
       </CardWrapper>
     </div>
   )
