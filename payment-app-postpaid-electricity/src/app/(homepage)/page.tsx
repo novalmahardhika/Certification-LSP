@@ -4,6 +4,7 @@ import TitleDashboard from '@/components/dashboard/title-dashboard'
 import { currentUser } from '@/hooks/server/current-user'
 import { BillTabelType, columns } from './_components/table-bill/column'
 import { formatDate } from '@/lib/format-date'
+import { formatRupiah } from '@/lib/format-rupiah'
 
 export default async function Home() {
   const user = await currentUser()
@@ -16,8 +17,9 @@ export default async function Home() {
 
   const modifiedData: BillTabelType[] = bills.map((bill) => ({
     id: bill.id,
+    userId: bill.userId,
     totalKwh: bill.totalKwh,
-    totalPrice: bill.totalPrice,
+    totalPrice: formatRupiah(bill.totalPrice),
     status: bill.status,
     date: formatDate(bill.createdAt),
   }))

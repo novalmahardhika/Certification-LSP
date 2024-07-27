@@ -7,8 +7,9 @@ import ButtonAction from './button-action'
 
 export type BillTabelType = {
   id: string
+  userId: string
   totalKwh: number
-  totalPrice: number
+  totalPrice: string
   status: PaymentStatus
   date: string
 }
@@ -37,7 +38,7 @@ export const columns: ColumnDef<BillTabelType>[] = [
             status === PaymentStatus.CANCELLED && 'text-red-500'
           }
           ${status === PaymentStatus.PENDING && 'text-yellow-500'}   
-           font-semibold text-gray-400`}
+           font-semibold `}
         >
           {row.original.status === PaymentStatus.NOT_PAID
             ? 'NOT PAID'

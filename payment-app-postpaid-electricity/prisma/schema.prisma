@@ -54,10 +54,10 @@ model Payment {
   // expires DateTime
 
   userId String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   billId String
-  bill Bill @relation(fields: [billId],references: [id])
+  bill Bill @relation(fields: [billId],references: [id], onDelete: Cascade)
 }
 
 

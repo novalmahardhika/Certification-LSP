@@ -11,7 +11,7 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { PaymentStatus } from '@prisma/client'
-import React from 'react'
+import React, { startTransition, useTransition } from 'react'
 import { BillTabelType } from './column'
 import {
   Form,
@@ -28,8 +28,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { CreatePaymentSchema } from '@/lib/types'
 import { useCurrentUser } from '@/hooks/use-current-user'
 import { Separator } from '@/components/ui/separator'
+import { createPayment } from '@/actions/payment'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 export default function ButtonAction({ bill }: { bill: BillTabelType }) {
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
   const user = useCurrentUser()
 
   const form = useForm<z.infer<typeof CreatePaymentSchema>>({
@@ -45,12 +50,36 @@ export default function ButtonAction({ bill }: { bill: BillTabelType }) {
   const checkStatusPaid = bill.status === PaymentStatus.PAID
 
   const onSubmit = (values: z.infer<typeof CreatePaymentSchema>) => {
-    console.log(values)
+    const payload = {
+      ...values,
+      userId: bill.userId,
+      billId: bill.id,
+    }
 
-    form.reset({
-      accountName: '',
-      accountNumber: '',
-      bankName: '',
+    startTransition(async () => {
+      try {
+        const data = await createPayment(payload)
+
+        if (data.success) {
+          toast.success(data.success)
+
+          form.reset({
+            accountName: '',
+            accountNumber: '',
+            bankName: '',
+          })
+
+          router.refresh()
+          return
+        }
+
+        if (data.error) {
+          toast.error(data.error)
+          return
+        }
+      } catch (error) {
+        toast.error('something went wrong')
+      }
     })
   }
 
@@ -83,17 +112,17 @@ export default function ButtonAction({ bill }: { bill: BillTabelType }) {
               <Separator className='my-1 bg-gray-300' />
             </div>
 
-            <div className='font-semibold text-sm flex justify-between'>
+            <div className='font-medium text-sm flex justify-between'>
               <span>Total kWh</span>
               <span>{bill.totalKwh}</span>
             </div>
 
-            <div className='font-semibold text-sm flex justify-between'>
+            <div className='font-medium text-sm flex justify-between'>
               <span>Total Price</span>
               <span>{bill.totalPrice}</span>
             </div>
 
-            <div className='font-semibold text-sm flex justify-between'>
+            <div className='font-medium text-sm flex justify-between'>
               <span>Virtual Account</span>
               <span>000035463122</span>
             </div>
@@ -145,7 +174,9 @@ export default function ButtonAction({ bill }: { bill: BillTabelType }) {
                   </FormItem>
                 )}
               />
-              <Button type='submit'>Payment</Button>
+              <Button type='submit' disabled={isPending}>
+                Payment
+              </Button>
             </form>
           </Form>
         </div>

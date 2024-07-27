@@ -57,3 +57,17 @@ export const CreatePaymentSchema = z.object({
     .trim()
     .min(1, { message: 'Please input your account name' }),
 })
+
+export const PayloadPaymentSchema = z.object({
+  userId: z.string().trim().min(1, { message: 'Please input your user Id' }),
+  billId: z.string().trim().min(1, { message: 'Please input your Bill Id' }),
+  bankName: z.string().trim().min(1, { message: 'Please input your Bank' }),
+  accountNumber: z
+    .string()
+    .trim()
+    .min(1, { message: 'Please input your account number' }),
+  accountName: z
+    .string()
+    .trim()
+    .min(1, { message: 'Please input your account name' }),
+})
