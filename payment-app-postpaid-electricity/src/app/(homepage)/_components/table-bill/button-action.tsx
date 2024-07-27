@@ -174,9 +174,11 @@ export default function ButtonAction({ bill }: { bill: BillTabelType }) {
                   </FormItem>
                 )}
               />
-              <Button type='submit' disabled={isPending}>
-                Payment
-              </Button>
+              <DialogClose>
+                <Button type='submit' disabled={isPending}>
+                  Payment
+                </Button>
+              </DialogClose>
             </form>
           </Form>
         </div>

@@ -5,8 +5,15 @@ import { Lightbulb } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '../ui/button'
 import { signOut } from 'next-auth/react'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
-export default function LayoutHomePage({ children }: { children: ReactNode }) {
+export default function LayoutHomePage({
+  children,
+  image,
+}: {
+  children: ReactNode
+  image: string | null | undefined
+}) {
   return (
     <>
       <nav className='bg-indigo-700 h-16'>
@@ -16,13 +23,20 @@ export default function LayoutHomePage({ children }: { children: ReactNode }) {
             <span className='text-white font-semibold text-xl'>Electricy</span>
           </Link>
 
-          <Button
-            variant={'ghost'}
-            onClick={() => signOut()}
-            className='text-white border  hover:text-indigo-700 '
-          >
-            Logout
-          </Button>
+          <div className='flex sm:space-x-2'>
+            <Button
+              variant={'ghost'}
+              onClick={() => signOut()}
+              className='text-white border  hover:text-indigo-700 '
+            >
+              Logout
+            </Button>
+
+            <Avatar className='hidden sm:block'>
+              <AvatarImage src={image || ''} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          </div>
         </div>
       </nav>
 

@@ -12,6 +12,7 @@ import {
   Users,
   Lightbulb,
   LogOut,
+  DollarSign,
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -45,9 +46,9 @@ const items = [
     icon: <Package className='h-4 w-4' />,
   },
   {
-    title: 'Admin',
-    href: '#',
-    icon: <ShoppingCart className='h-4 w-4' />,
+    title: 'Payment',
+    href: '/dashboard/payments',
+    icon: <DollarSign className='h-4 w-4' />,
   },
 
   {

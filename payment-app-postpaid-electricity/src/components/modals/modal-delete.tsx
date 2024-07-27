@@ -31,8 +31,7 @@ export function ModalDelete({ onDelete, loading }: ModalDeleteProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently deleted account
-            .
+            This action cannot be undone. This will permanently deleted data .
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

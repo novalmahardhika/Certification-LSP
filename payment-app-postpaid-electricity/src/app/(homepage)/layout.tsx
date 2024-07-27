@@ -19,5 +19,5 @@ export default async function HomeLayout({
     redirect('/login')
   }
 
-  return <LayoutHomePage>{children}</LayoutHomePage>
+  return <LayoutHomePage image={user.image}>{children}</LayoutHomePage>
 }

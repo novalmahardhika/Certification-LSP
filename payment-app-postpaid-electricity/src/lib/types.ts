@@ -71,3 +71,11 @@ export const PayloadPaymentSchema = z.object({
     .trim()
     .min(1, { message: 'Please input your account name' }),
 })
+
+export const PayloadCancelPaymentSchema = z.object({
+  userId: z.string(),
+  billId: z.string(),
+  usageId: z.string(),
+  totalKwh: z.number(),
+  totalPrice: z.number(),
+})
