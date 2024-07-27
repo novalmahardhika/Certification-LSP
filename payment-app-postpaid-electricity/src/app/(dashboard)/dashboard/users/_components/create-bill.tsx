@@ -1,5 +1,6 @@
 'use client'
 
+import { createBill } from '@/actions/bill'
 import CardWrapper from '@/components/dashboard/card-wrapper'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,19 +16,24 @@ import { Input } from '@/components/ui/input'
 import { formatDate } from '@/lib/format-date'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CostVariant, Usage } from '@prisma/client'
-import React from 'react'
+import { useRouter } from 'next/navigation'
+import React, { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 type CreateBillProps = {
   currentUsage: Usage
-  costVariant: CostVariant | null
+  costVariant: CostVariant
 }
 
 export default function CreateBill({
   currentUsage,
   costVariant,
 }: CreateBillProps) {
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
+
   const formSchema = z.object({
     finalkWh: z.coerce
       .number()
@@ -43,8 +49,35 @@ export default function CreateBill({
     },
   })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const payload = {
+      userId: currentUsage.userId,
+      usageId: currentUsage.id,
+      totalKwh: values.finalkWh - currentUsage.initialKwh,
+      finalKwh: values.finalkWh,
+      totalPrice:
+        (values.finalkWh - currentUsage.initialKwh) * costVariant.costPerKwh,
+      endDate: currentUsage.endDate,
+    }
+
+    startTransition(async () => {
+      try {
+        const data = await createBill(payload)
+
+        if (data.success) {
+          toast.success(data.success)
+          router.refresh()
+          return
+        }
+
+        if (data.error) {
+          toast.error(data.error)
+          return
+        }
+      } catch (error) {
+        toast.error('something went wrong')
+      }
+    })
   }
 
   return (
@@ -100,7 +133,7 @@ export default function CreateBill({
                 </FormItem>
               )}
             />
-            <Button type='submit' className='w-full'>
+            <Button type='submit' className='w-full' disabled={isPending}>
               Create Bill
             </Button>
           </form>

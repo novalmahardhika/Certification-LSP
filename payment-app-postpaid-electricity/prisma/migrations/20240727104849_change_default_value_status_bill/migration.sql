@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Bill" ALTER COLUMN "status" SET DEFAULT 'NOT_PAID';

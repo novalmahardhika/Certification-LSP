@@ -18,6 +18,48 @@ enum Role {
   USER
 }
 
+enum PaymentStatus {
+  NOT_PAID
+  PENDING
+  PAID
+  CANCELLED
+}
+
+
+model Bill {
+  id String @id @default(cuid())
+  
+  totalKwh Int
+  totalPrice Int
+  status PaymentStatus @default(NOT_PAID)
+
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  usageId String
+  usage Usage @relation(fields: [usageId], references: [id], onDelete: Cascade)
+
+  payment Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Payment {
+  id String @id @default(cuid())
+
+  bankName String
+  accountNumber String
+  accountName String
+  // expires DateTime
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
+
+  billId String
+  bill Bill @relation(fields: [billId],references: [id])
+}
+
 
 model Usage {
   id String @id @default(cuid())
@@ -28,6 +70,7 @@ model Usage {
   startDate DateTime @default(now())
   endDate DateTime @default(dbgenerated("(NOW() + '30 days'::interval)"))
 
+  bill Bill[]
   userId String?
   user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -42,6 +85,7 @@ model CostVariant {
   code String @unique
   power String
   costPerKwh Int
+
   user User[]
   
   createdAt DateTime @default(now())
@@ -63,6 +107,8 @@ model User {
   costVariantId String? 
   costVariant CostVariant? @relation(fields: [costVariantId], references: [id] ) 
   usage Usage[]
+  payment Payment[]
+  bill Bill[]
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

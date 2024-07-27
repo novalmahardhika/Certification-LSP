@@ -36,3 +36,24 @@ export const CostVariantSchema = z.object({
   power: z.string().trim().min(1),
   costPerKwh: z.coerce.number(),
 })
+
+export const PayloadCreatedBillSchema = z.object({
+  userId: z.string().nullable(),
+  usageId: z.string(),
+  totalKwh: z.number(),
+  finalKwh: z.number(),
+  totalPrice: z.number(),
+  endDate: z.date(),
+})
+
+export const CreatePaymentSchema = z.object({
+  bankName: z.string().trim().min(1, { message: 'Please input your Bank' }),
+  accountNumber: z
+    .string()
+    .trim()
+    .min(1, { message: 'Please input your account number' }),
+  accountName: z
+    .string()
+    .trim()
+    .min(1, { message: 'Please input your account name' }),
+})

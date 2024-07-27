@@ -20,9 +20,11 @@ export default async function DetailUserPage({
     redirect('/dashboard/users')
   }
 
-  console.log(user.costVariant)
-
   const currentUsage = user.usage.filter((usage) => usage.isActive === true)[0]
+
+  if (!user.costVariant || !user.costVariant.costPerKwh) {
+    user.costVariant = costVariant[0]
+  }
 
   return (
     <div>
