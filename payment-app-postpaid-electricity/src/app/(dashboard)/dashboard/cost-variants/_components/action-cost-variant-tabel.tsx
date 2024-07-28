@@ -25,15 +25,22 @@ export default function ActionCostVariantTabel(costVariant: CostPerKwhTable) {
 
   const onDelete = async () => {
     startTransition(async () => {
-      const data = deleteCostVariant(costVariant.id)
-      toast.promise(async () => data, {
-        success: (await data.then()).success,
-        error: (await data.then()).error || 'Something went wrong',
-        loading: 'wait a minute',
-        finally: () => {
+      try {
+        const data = await deleteCostVariant(costVariant.id)
+
+        if (data.success) {
+          toast.success(data.success)
           router.refresh()
-        },
-      })
+          return
+        }
+
+        if (data.error) {
+          toast.error(data.error)
+          return
+        }
+      } catch (error) {
+        toast.error('Something went wrong')
+      }
     })
   }
 

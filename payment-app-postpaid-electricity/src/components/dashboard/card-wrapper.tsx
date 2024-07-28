@@ -10,7 +10,7 @@ export default function CardWrapper({
   className?: string
 }) {
   return (
-    <Card className='text-sm py-2 max-w-sm'>
+    <Card className='text-sm py-2 md:max-w-sm'>
       <CardContent className={cn('py-2 flex flex-col space-y-3', className)}>
         {children}
       </CardContent>

@@ -35,7 +35,7 @@ export default async function DetailUserPage({
       <Separator className='my-3' />
       <div className='grid md:grid-cols-2 gap-10  md:gap-5 xl:gap-0'>
         <FormUpdateUser user={user} listCostVariant={costVariant} />
-        <div className='flex justify-between order-first md:order-last '>
+        <div className='w-full  order-first md:order-last '>
           <CreateBill
             currentUsage={currentUsage}
             costVariant={user.costVariant}

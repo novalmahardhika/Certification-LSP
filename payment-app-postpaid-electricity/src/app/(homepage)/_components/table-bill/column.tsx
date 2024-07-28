@@ -8,7 +8,10 @@ import ButtonAction from './button-action'
 export type BillTabelType = {
   id: string
   userId: string
+  kwhNumber: string
   totalKwh: number
+  initialKwh: string
+  totalKwhStr: string
   totalPrice: string
   status: PaymentStatus
   date: string
@@ -16,11 +19,11 @@ export type BillTabelType = {
 
 export const columns: ColumnDef<BillTabelType>[] = [
   {
-    accessorKey: 'id',
-    header: 'ID',
+    accessorKey: 'kwhNumber',
+    header: 'kWh Number',
   },
   {
-    accessorKey: 'totalKwh',
+    accessorKey: 'totalKwhStr',
     header: 'Total kWh',
   },
   {

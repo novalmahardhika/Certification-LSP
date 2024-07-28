@@ -8,6 +8,7 @@ import { getUserById, updateVerifiedUser } from './lib/user'
 import { FormLoginSchema } from './lib/types'
 import bcrypt from 'bcryptjs'
 import { getUserByEmail } from './actions/user'
+import { generateKwhNum } from './lib/generate-kwh-number'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -65,11 +66,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const checkUserByEmail = await getUserByEmail(user.email)
 
       if (checkOauth && !checkUserByEmail) {
+        const kwhNumber = await generateKwhNum()
+
         await prisma.user.create({
           data: {
             name: user.name,
             email: user.email,
             image: user.image,
+            kwhNumber,
+            costVariant: {
+              connect: {
+                code: 'INV001',
+              },
+            },
             usage: {
               create: {
                 isActive: true,

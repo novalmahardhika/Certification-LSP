@@ -5,6 +5,7 @@ import { prisma } from '../../prisma/client/db'
 import { z } from 'zod'
 import bcrypt from 'bcryptjs'
 import { Role } from '@prisma/client'
+import { generateKwhNum } from '@/lib/generate-kwh-number'
 
 export async function getUserById(id: string) {
   const user = await prisma.user.findUnique({
@@ -136,12 +137,15 @@ export async function createUser(payload: z.infer<typeof UserCreateSchema>) {
 
     const hashPassword = await bcrypt.hash(password, 10)
 
+    const kwhNumber = await generateKwhNum()
+
     const data = {
       name,
       email,
       phoneNumber,
       role,
       address,
+      kwhNumber,
       password: hashPassword,
       costVariant: {
         connect: {

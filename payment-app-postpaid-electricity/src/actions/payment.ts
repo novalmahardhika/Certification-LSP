@@ -7,7 +7,7 @@ import { prisma } from '../../prisma/client/db'
 export async function getListAllPayment() {
   return await prisma.payment.findMany({
     orderBy: {
-      createdAt: 'asc',
+      createdAt: 'desc',
     },
     include: {
       user: true,

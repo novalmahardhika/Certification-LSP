@@ -24,16 +24,23 @@ export default function ActionUserTabel(user: UserTable) {
 
   const onDelete = async () => {
     startTransition(async () => {
-      const data = deleteUser(user.id)
+      try {
+        const data = await deleteUser(user.id)
 
-      toast.promise(async () => data, {
-        success: (await data.then()).success,
-        error: (await data.then()).error || 'Something went wrong',
-        loading: 'wait a minute',
-        finally: () => {
+        if (data.success) {
+          toast.success(data.success)
           router.refresh()
-        },
-      })
+          return
+        }
+
+        if (data.error) {
+          toast.error(data.error)
+          router.refresh()
+          return
+        }
+      } catch (error) {
+        toast.error('Something went wrong')
+      }
     })
   }
 

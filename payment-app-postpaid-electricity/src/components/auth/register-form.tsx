@@ -19,9 +19,11 @@ import { FormRegisterSchema } from '@/lib/types'
 import { toast } from 'sonner'
 import { useTransition } from 'react'
 import SocialButton from '../ui/social-button'
+import { useRouter } from 'next/navigation'
 
 export function RegisterForm() {
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof FormRegisterSchema>>({
     resolver: zodResolver(FormRegisterSchema),
@@ -39,7 +41,7 @@ export function RegisterForm() {
 
         if (data.success) {
           toast.success(data.success)
-          return
+          router.push('/login')
         }
 
         if (data.error) {

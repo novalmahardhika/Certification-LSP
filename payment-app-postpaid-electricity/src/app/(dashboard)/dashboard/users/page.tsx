@@ -11,6 +11,7 @@ export default async function DashboardUserPage() {
 
   const modifiedData = users.map((user) => ({
     id: user.id,
+    kwhNumber: user.kwhNumber,
     name: user.name,
     email: user.email,
     costVariant: user.costVariant?.power,

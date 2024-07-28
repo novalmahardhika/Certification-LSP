@@ -2,14 +2,14 @@
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER');
 
 -- CreateEnum
-CREATE TYPE "PaymentStatus" AS ENUM ('PENDING', 'PAID', 'CANCELLED');
+CREATE TYPE "PaymentStatus" AS ENUM ('NOT_PAID', 'PENDING', 'PAID', 'CANCELLED');
 
 -- CreateTable
 CREATE TABLE "Bill" (
     "id" TEXT NOT NULL,
     "totalKwh" INTEGER NOT NULL,
     "totalPrice" INTEGER NOT NULL,
-    "status" "PaymentStatus" NOT NULL DEFAULT 'PENDING',
+    "status" "PaymentStatus" NOT NULL DEFAULT 'NOT_PAID',
     "userId" TEXT NOT NULL,
     "usageId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -21,10 +21,13 @@ CREATE TABLE "Bill" (
 -- CreateTable
 CREATE TABLE "Payment" (
     "id" TEXT NOT NULL,
+    "bankName" TEXT NOT NULL,
     "accountNumber" TEXT NOT NULL,
     "accountName" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "billId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Payment_pkey" PRIMARY KEY ("id")
 );
@@ -59,6 +62,7 @@ CREATE TABLE "CostVariant" (
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
+    "kwhNumber" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "emailVerified" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
@@ -106,6 +110,9 @@ CREATE TABLE "VerificationToken" (
 CREATE UNIQUE INDEX "CostVariant_code_key" ON "CostVariant"("code");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_kwhNumber_key" ON "User"("kwhNumber");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
@@ -118,10 +125,10 @@ ALTER TABLE "Bill" ADD CONSTRAINT "Bill_userId_fkey" FOREIGN KEY ("userId") REFE
 ALTER TABLE "Bill" ADD CONSTRAINT "Bill_usageId_fkey" FOREIGN KEY ("usageId") REFERENCES "Usage"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Payment" ADD CONSTRAINT "Payment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Payment" ADD CONSTRAINT "Payment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Payment" ADD CONSTRAINT "Payment_billId_fkey" FOREIGN KEY ("billId") REFERENCES "Bill"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Payment" ADD CONSTRAINT "Payment_billId_fkey" FOREIGN KEY ("billId") REFERENCES "Bill"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Usage" ADD CONSTRAINT "Usage_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -6,6 +6,7 @@ import { prisma } from '../../prisma/client/db'
 import bcrypt from 'bcryptjs'
 import { signIn } from '@/auth'
 import { AuthError } from 'next-auth'
+import { generateKwhNum } from '@/lib/generate-kwh-number'
 
 export async function registerUser(
   payload: z.infer<typeof FormRegisterSchema>
@@ -33,11 +34,19 @@ export async function registerUser(
       return { error: 'Error while hashing password' }
     }
 
+    const kwhNumber = await generateKwhNum()
+
     await prisma.user.create({
       data: {
         email,
         name,
+        kwhNumber,
         password: encryptedPassword,
+        costVariant: {
+          connect: {
+            code: 'INV001',
+          },
+        },
         usage: {
           create: {
             isActive: true,
@@ -48,6 +57,8 @@ export async function registerUser(
 
     return { success: 'Register Successfully' }
   } catch (error) {
+    console.log(error)
+
     return { error: 'Register user is Fail' }
   }
 }

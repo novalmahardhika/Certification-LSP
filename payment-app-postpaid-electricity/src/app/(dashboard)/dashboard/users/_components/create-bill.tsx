@@ -81,10 +81,10 @@ export default function CreateBill({
   }
 
   return (
-    <div className=' w-full'>
-      <h2 className='font-semibold mb-3 text-xl'>Detail Usage</h2>
+    <div className='w-full'>
+      <h2 className='font-semibold mb-3 text-xl '>Detail Usage</h2>
 
-      <CardWrapper className='flex flex-col space-y-3'>
+      <CardWrapper className='flex flex-col space-y-3 '>
         <span className='flex justify-between font-medium'>
           <p>Code Variant</p>
           <p>{costVariant?.code}</p>

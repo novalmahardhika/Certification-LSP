@@ -1,3 +1,4 @@
+import { generateKwhNum } from '../src/lib/generate-kwh-number'
 import { mockCostVariant, mockUserAdmin, mockUsers } from '../src/lib/mock-data'
 import { prisma } from './client/db'
 
@@ -19,6 +20,7 @@ async function main() {
         update: {},
         create: {
           ...user,
+          kwhNumber: await generateKwhNum(),
         },
       })
   )
@@ -29,6 +31,7 @@ async function main() {
         update: {},
         create: {
           ...user,
+          kwhNumber: await generateKwhNum(),
           usage: {
             create: {
               isActive: true,

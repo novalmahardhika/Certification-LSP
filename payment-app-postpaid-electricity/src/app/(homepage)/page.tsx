@@ -18,7 +18,10 @@ export default async function Home() {
   const modifiedData: BillTabelType[] = bills.map((bill) => ({
     id: bill.id,
     userId: bill.userId,
+    kwhNumber: bill.user.kwhNumber,
+    initialKwh: `${bill.usage.initialKwh} kWh`,
     totalKwh: bill.totalKwh,
+    totalKwhStr: `${bill.totalKwh} kWh`,
     totalPrice: formatRupiah(bill.totalPrice),
     status: bill.status,
     date: formatDate(bill.createdAt),

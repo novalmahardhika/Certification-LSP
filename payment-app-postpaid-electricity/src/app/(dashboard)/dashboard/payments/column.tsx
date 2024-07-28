@@ -38,6 +38,19 @@ export const columns: ColumnDef<PaymentTabelType>[] = [
   {
     accessorKey: 'status',
     header: 'PaymentStatus',
+    cell: ({ row }) => {
+      const payment = row.original
+      const status = payment.status
+      return (
+        <p
+          className={`${status === 'PAID' && 'text-green-500'} ${
+            status === 'CANCELLED' && 'text-red-500'
+          } ${status === 'PENDING' && 'text-yellow-500'} font-semibold`}
+        >
+          {payment.status}
+        </p>
+      )
+    },
   },
 
   {

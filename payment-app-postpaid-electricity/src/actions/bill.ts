@@ -7,6 +7,10 @@ import { PayloadCreatedBillSchema } from '@/lib/types'
 export async function getBillByUserId(id: string) {
   const data = await prisma.bill.findMany({
     where: { userId: id },
+    include: {
+      usage: true,
+      user: true,
+    },
     orderBy: {
       createdAt: 'desc',
     },

@@ -7,6 +7,7 @@ import ActionUserTabel from './action-user-tabel'
 export type UserTable = {
   id: string
   name: string
+  kwhNumber: string
   email: string
   costVariant: string | undefined
   date: string
@@ -14,8 +15,8 @@ export type UserTable = {
 
 export const columns: ColumnDef<UserTable>[] = [
   {
-    accessorKey: 'id',
-    header: 'ID',
+    accessorKey: 'kwhNumber',
+    header: 'kWh Number',
   },
   {
     accessorKey: 'name',
