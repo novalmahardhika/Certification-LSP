@@ -39,18 +39,22 @@ export function LoginForm() {
 
   const onSubmit = (values: z.infer<typeof FormLoginSchema>) => {
     startTransition(async () => {
-      const data = loginUser(values)
+      try {
+        const data = await loginUser(values)
 
-      toast.promise(() => data, {
-        success: (await data.then()).success,
-        error: (await data.then()).error || 'Something went wrong',
-        loading: 'wait a minute',
-        finally: () => {
-          setTimeout(() => {
-            window.location.href = '/'
-          }, 1000)
-        },
-      })
+        if (data.success) {
+          toast.success(data.success)
+          window.location.assign('/')
+          return
+        }
+
+        if (data.error) {
+          toast.error(data.error)
+          return
+        }
+      } catch (error) {
+        toast.error('Something went wrong')
+      }
     })
   }
 
@@ -68,7 +72,10 @@ export function LoginForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='text-white sm:text-black'
+      >
         <FormField
           control={form.control}
           name='email'

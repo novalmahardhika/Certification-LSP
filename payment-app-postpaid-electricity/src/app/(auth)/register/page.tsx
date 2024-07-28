@@ -7,6 +7,8 @@ export default function RegisterPage() {
     <CardWrapperForm
       title='Register'
       description=' Welcome, Lets join with us to have a new experience.'
+      href='/login'
+      linkText='Already have an account ?'
     >
       <RegisterForm />
     </CardWrapperForm>

@@ -35,15 +35,21 @@ export function FormCreateCostVariant() {
 
   const onSubmit = (values: z.infer<typeof CostVariantSchema>) => {
     startTransition(async () => {
-      const data = createCostVariant(values)
-      toast.promise(async () => data, {
-        success: (await data.then()).success,
-        error: (await data.then()).error || 'Something went wrong',
-        loading: 'wait a minute',
-        finally: () => {
-          router.refresh()
-        },
-      })
+      try {
+        const data = await createCostVariant(values)
+
+        if (data.success) {
+          toast.success(data.success)
+          return
+        }
+
+        if (data.error) {
+          toast.error(data.error)
+          return
+        }
+      } catch (error) {
+        toast.error('Something went wrong')
+      }
     })
   }
 

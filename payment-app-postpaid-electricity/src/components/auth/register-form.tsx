@@ -34,23 +34,30 @@ export function RegisterForm() {
 
   const onSubmit = (values: z.infer<typeof FormRegisterSchema>) => {
     startTransition(async () => {
-      const data = registerUser(values)
-      toast.promise(async () => data, {
-        success: (await data.then()).success,
-        error: (await data.then()).error || 'Something went wrong',
-        loading: 'wait a minute',
-        finally: () => {
-          setTimeout(() => {
-            window.location.href = '/login'
-          }, 1000)
-        },
-      })
+      try {
+        const data = await registerUser(values)
+
+        if (data.success) {
+          toast.success(data.success)
+          return
+        }
+
+        if (data.error) {
+          toast.error(data.error)
+          return
+        }
+      } catch (error) {
+        toast.error('Something went wrong')
+      }
     })
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='text-white sm:text-black'
+      >
         <FormField
           control={form.control}
           name='name'
