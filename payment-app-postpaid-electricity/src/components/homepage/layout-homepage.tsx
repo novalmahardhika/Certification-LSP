@@ -15,7 +15,7 @@ export default function LayoutHomePage({
   image: string | null | undefined
 }) {
   return (
-    <>
+    <div className='flex flex-col w-full justify-between h-screen'>
       <nav className='bg-indigo-700 h-16'>
         <div className='h-full max-w-7xl mx-auto px-3 flex justify-between items-center'>
           <Link href='/' className='flex items-center h-full'>
@@ -40,7 +40,11 @@ export default function LayoutHomePage({
         </div>
       </nav>
 
-      <div className='max-w-7xl p-3 mx-auto'>{children}</div>
-    </>
+      <div className='max-w-7xl p-3 mx-auto w-full flex-1'>{children}</div>
+
+      <footer className='text-sm font-medium text-gray-500 text-center  p-4'>
+        &copy; 2024 Noval Mahardhika{' '}
+      </footer>
+    </div>
   )
 }

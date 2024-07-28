@@ -25,7 +25,7 @@ export default async function Home() {
   }))
 
   return (
-    <main className=''>
+    <main>
       <TitleDashboard
         title='Bill Users'
         desc='List of bill users for every month.'
