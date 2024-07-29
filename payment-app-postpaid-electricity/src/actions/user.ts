@@ -27,6 +27,20 @@ export async function getUserByEmail(email: string) {
   return user
 }
 
+export async function getAllAdmin() {
+  const users = await prisma.user.findMany({
+    where: { role: Role.ADMIN },
+    orderBy: {
+      createdAt: 'asc',
+    },
+    include: {
+      costVariant: true,
+    },
+  })
+
+  return users
+}
+
 export async function getAllUsers() {
   const users = await prisma.user.findMany({
     where: { role: Role.USER },

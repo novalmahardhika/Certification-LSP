@@ -8,7 +8,7 @@ export default function Navbar() {
   const user = useCurrentUser()
 
   return (
-    <nav className='w-full h-full flex justify-end items-center'>
+    <nav className='w-full h-14 flex justify-end items-center lg:h-[60px] '>
       <Avatar>
         <AvatarImage src={user?.image || undefined} />
         <AvatarFallback>CN</AvatarFallback>

@@ -35,7 +35,6 @@ export default function ActionUserTabel(user: UserTable) {
 
         if (data.error) {
           toast.error(data.error)
-          router.refresh()
           return
         }
       } catch (error) {

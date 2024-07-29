@@ -32,7 +32,7 @@ import { signOut } from 'next-auth/react'
 const items = [
   {
     title: 'Dashboard',
-    href: '#',
+    href: '/dashboard',
     icon: <Home className='h-4 w-4' />,
   },
   {
@@ -51,11 +51,11 @@ const items = [
     icon: <DollarSign className='h-4 w-4' />,
   },
 
-  {
-    title: 'Analytics',
-    href: '#',
-    icon: <LineChart className='h-4 w-4' />,
-  },
+  // {
+  //   title: 'Analytics',
+  //   href: '#',
+  //   icon: <LineChart className='h-4 w-4' />,
+  // },
 ]
 
 export default function DashboardLayoutComponent({
@@ -64,7 +64,7 @@ export default function DashboardLayoutComponent({
   children: ReactNode
 }) {
   return (
-    <div className='grid h-screen w-full  grid-cols-8'>
+    <div className='grid h-screen w-full grid-cols-8 overflow-hidden'>
       {/* sidebar */}
       <div className='hidden border-r bg-muted/40 md:block col-span-2 xl:col-span-1'>
         <div className='flex h-full max-h-screen flex-col gap-2'>
@@ -101,7 +101,7 @@ export default function DashboardLayoutComponent({
         </div>
       </div>
 
-      <div className='flex flex-col col-span-full md:col-span-6 xl:col-span-7'>
+      <div className='flex flex-col col-span-full md:col-span-6 xl:col-span-7 overflow-auto'>
         <header className='flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6'>
           <Sheet>
             <SheetTrigger asChild>

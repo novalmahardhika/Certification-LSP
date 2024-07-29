@@ -4,6 +4,14 @@ import { PayloadCancelPaymentSchema, PayloadPaymentSchema } from '@/lib/types'
 import { z } from 'zod'
 import { prisma } from '../../prisma/client/db'
 
+export async function getListAllPaymentSuccess() {
+  return await prisma.bill.findMany({
+    where: {
+      status: 'PAID',
+    },
+  })
+}
+
 export async function getListAllPayment() {
   return await prisma.payment.findMany({
     orderBy: {
