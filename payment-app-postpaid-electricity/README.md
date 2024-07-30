@@ -24,7 +24,7 @@ Here are the steps to run the project locally.
 1. Change directory to root project
 
    ```bash
-   cd certification-bnsp
+   cd Certification-LSP
    ```
 
 1. Go to folder project app-postpaid-electricity

@@ -9,7 +9,7 @@ git clone https://github.com/novalmahardhika/Certification-LSP.git
 ### 2. Go to Folder
 
 ```bash
-cd certification-bnsp
+cd Certification-LSP
 ```
 
 ### 3. Go to Folder Project
