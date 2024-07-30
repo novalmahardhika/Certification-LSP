@@ -1,15 +1,9 @@
-# app-postpaid-electricity
+# algorithm-searching-and-sorting-cli
 
 ## Tech Stack
 
-- Next.js
-- Auth.js
-- TypeScript
-- PostgreSQL
-- Tailwind CSS
-- Shadcn UI
-- Prisma
-- Zod
+- Javascript
+- enquirer
 
 ## Development
 
@@ -30,19 +24,13 @@ Here are the steps to run the project locally.
 1. Go to folder project app-postpaid-electricity
 
    ```bash
-   cd payment-app-postpaid-electricity
+   cd algorithm-searching-and-sorting-cli
    ```
 
 1. Install dependencies
 
    ```bash
    npm i
-   ```
-
-1. Create a copy of the `.env.example` file and name it `.env.local`. Make sure to fill the credentials correctly.
-
-   ```bash
-   cp .env.example .env.local
    ```
 
 1. Create DB if not exists
