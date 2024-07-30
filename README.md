@@ -3,7 +3,7 @@
 #### 1. Clone my Repo
 
 ```bash
-git clone https://github.com/novalmahardhika/certification-bnsp.git
+git clone https://github.com/novalmahardhika/Certification-LSP.git
 ```
 
 ### 2. Go to Folder
