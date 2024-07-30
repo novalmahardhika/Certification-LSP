@@ -33,7 +33,7 @@ export default async function DetailUserPage({
         desc='Show all of detail data from user.'
       />
       <Separator className='my-3' />
-      <div className='grid md:grid-cols-2 gap-10  md:gap-5 xl:gap-0'>
+      <div className='grid md:grid-cols-2 gap-10  md:gap-5 2xl:gap-0'>
         <FormUpdateUser user={user} listCostVariant={costVariant} />
         <div className='w-full  order-first md:order-last '>
           <CreateBill

@@ -101,7 +101,7 @@ model User {
   name  String
   email  String  @unique
   emailVerified DateTime?  @default(now())
-  phoneNumber String? @unique
+  phoneNumber String? 
   password String?
   image  String?
   role Role @default(USER)

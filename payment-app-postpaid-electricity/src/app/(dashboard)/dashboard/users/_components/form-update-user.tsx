@@ -57,6 +57,7 @@ export function FormUpdateUser({ user, listCostVariant }: UserProps) {
 
         if (data.success) {
           toast.success(data.success)
+          router.refresh()
           return
         }
 

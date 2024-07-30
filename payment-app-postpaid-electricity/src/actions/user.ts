@@ -85,8 +85,6 @@ export async function updateUser(
     const { name, email, address, phoneNumber, role, costVariantCode } =
       checkPayload.data
 
-    console.log(checkPayload.data)
-
     const updateUser = await prisma.user.update({
       where: {
         id,
@@ -111,6 +109,7 @@ export async function updateUser(
 
     return { success: 'user updated successfully' }
   } catch (error) {
+    console.log(error)
     return { error: 'Internal server error' }
   }
 }
@@ -139,15 +138,15 @@ export async function createUser(payload: z.infer<typeof UserCreateSchema>) {
       return { error: 'Email already exist ' }
     }
 
-    if (phoneNumber) {
-      const checkPhoneNumber = await prisma.user.findUnique({
-        where: { phoneNumber },
-      })
+    // if (phoneNumber) {
+    //   const checkPhoneNumber = await prisma.user.findUnique({
+    //     where: { phoneNumber },
+    //   })
 
-      if (checkPhoneNumber) {
-        return { error: 'Phone number already exist' }
-      }
-    }
+    //   if (checkPhoneNumber) {
+    //     return { error: 'Phone number already exist' }
+    //   }
+    // }
 
     const hashPassword = await bcrypt.hash(password, 10)
 
@@ -164,6 +163,11 @@ export async function createUser(payload: z.infer<typeof UserCreateSchema>) {
       costVariant: {
         connect: {
           code: costVariantCode,
+        },
+      },
+      usage: {
+        create: {
+          isActive: true,
         },
       },
     }

@@ -75,7 +75,7 @@ export default function ActionUserTabel(user: UserTable) {
             asChild
             className='w-full flex justify-start p-0'
           >
-            <Link href={`/dashboard/users/${user.id}`}>Edit</Link>
+            <Link href={`/dashboard/users/${user.id}`}>Detail</Link>
           </Button>
         </DropdownMenuItem>
 
